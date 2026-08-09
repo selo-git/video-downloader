@@ -1,0 +1,15 @@
+# 仮想環境
+.venv/
+
+# 実行時に生成されるファイル(個人情報を含む)
+settings.json
+history.json
+server.log
+nohup.out
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
