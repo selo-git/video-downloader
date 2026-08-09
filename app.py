@@ -563,6 +563,23 @@ def api_open_folder():
     return jsonify(ok=True)
 
 
+@app.post("/api/shutdown")
+def api_shutdown():
+    # アクティブなジョブがある場合は拒否
+    active = [j for j in jobs.values()
+              if j["status"] in ("queued", "downloading", "processing", "transcribing")]
+    if active:
+        return jsonify(error=f"実行中のジョブが{len(active)}件あります。完了またはキャンセル後に終了してください"), 409
+
+    def _exit():
+        import time
+        time.sleep(0.5)  # レスポンスを返してから終了
+        os._exit(0)
+
+    threading.Thread(target=_exit, daemon=True).start()
+    return jsonify(ok=True)
+
+
 if __name__ == "__main__":
     s = load_settings()
     Path(s["download_dir"]).mkdir(parents=True, exist_ok=True)

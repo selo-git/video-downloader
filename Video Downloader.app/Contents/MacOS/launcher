@@ -1,0 +1,24 @@
+#!/bin/bash
+# Video Downloader ランチャー
+# この .app はプロジェクトフォルダ直下に置かれている前提で、
+# サーバーが起動していなければ起動してからブラウザを開く。
+
+PROJECT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
+URL="http://localhost:3456"
+
+cd "$PROJECT_DIR" || exit 1
+
+if ! curl -s -o /dev/null --max-time 1 "$URL"; then
+  if [ ! -x .venv/bin/python ]; then
+    osascript -e 'display alert "セットアップが必要です" message "READMEの手順どおり、プロジェクトフォルダで\npython3 -m venv .venv\n.venv/bin/pip install -r requirements.txt\nを実行してください。"'
+    exit 1
+  fi
+  nohup .venv/bin/python app.py > server.log 2>&1 &
+  # 起動を最大20秒待つ
+  for _ in $(seq 1 40); do
+    curl -s -o /dev/null --max-time 1 "$URL" && break
+    sleep 0.5
+  done
+fi
+
+open "$URL"

@@ -36,11 +36,17 @@ python3 -m venv .venv
 
 ## 起動
 
+**「Video Downloader.app」をダブルクリック**するだけです(サーバーが起動し、ブラウザで http://localhost:3456 が開きます)。Dockにドラッグしておくとワンクリックで起動できます。
+
+終了するときは、設定タブの「サーバーを終了」ボタンを押してください。サーバーを常駐させる必要はなく、使うときだけ起動する運用ができます。
+
+ターミナルから起動する場合:
+
 ```bash
 .venv/bin/python app.py
 ```
 
-ブラウザで http://localhost:3456 を開きます。ダウンロードしたファイルは既定で `~/Downloads/VideoDownloader/` に保存されます(設定タブで変更可能)。
+ダウンロードしたファイルは既定で `~/Downloads/VideoDownloader/` に保存されます(設定タブで変更可能)。
 
 ## 使い方
 

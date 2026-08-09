@@ -299,6 +299,14 @@
       </div>
       <button id="saveSettingsBtn">設定を保存</button>
     </div>
+
+    <div class="card">
+      <div class="field" style="margin-bottom:12px">
+        <label>サーバー</label>
+        <div class="hint" style="margin-bottom:10px">使い終わったらここから終了できます。次回は「Video Downloader.app」をダブルクリックすれば再起動します。</div>
+        <button class="danger" id="shutdownBtn">サーバーを終了</button>
+      </div>
+    </div>
   </div>
 
   <p class="note">
@@ -559,6 +567,16 @@ $('saveSettingsBtn').addEventListener('click', async () => {
   const data = await res.json();
   if (!res.ok) return showError(data.error);
   showOk('設定を保存しました');
+});
+
+$('shutdownBtn').addEventListener('click', async () => {
+  if (!confirm('サーバーを終了しますか?')) return;
+  const res = await fetch('/api/shutdown', { method: 'POST' });
+  if (!res.ok) {
+    const data = await res.json();
+    return showError(data.error);
+  }
+  document.body.innerHTML = '<div style="display:flex;min-height:90vh;align-items:center;justify-content:center;color:#8b90a0;font-size:15px">サーバーを終了しました。このタブは閉じて構いません。</div>';
 });
 </script>
 </body>
