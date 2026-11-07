@@ -8,6 +8,12 @@ import threading
 from datetime import datetime
 from pathlib import Path
 
+# Finder から .app 経由で起動すると PATH に Homebrew が含まれず、
+# yt-dlp / mlx_whisper が ffmpeg を見つけられないため補完する。
+for _bin in ("/opt/homebrew/bin", "/usr/local/bin"):
+    if os.path.isdir(_bin) and _bin not in os.environ.get("PATH", "").split(os.pathsep):
+        os.environ["PATH"] = _bin + os.pathsep + os.environ.get("PATH", "")
+
 from flask import Flask, jsonify, render_template, request
 import yt_dlp
 from yt_dlp.utils import DownloadCancelled, download_range_func
